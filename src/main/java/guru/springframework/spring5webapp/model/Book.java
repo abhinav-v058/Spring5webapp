@@ -13,7 +13,10 @@ public class Book {
     private String title;
     private String isbn;
     private String publisher;
+
     @ManyToMany
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
+    inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
     public Book(){
@@ -33,12 +36,12 @@ public class Book {
         this.authors = authors;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -53,8 +56,16 @@ public class Book {
         return isbn;
     }
 
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     public String getPublisher() {
         return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public Set<Author> getAuthors() {
@@ -65,11 +76,29 @@ public class Book {
         this.authors = authors;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return id != null ? id.equals(book.id) : book.id == null;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", authors=" + authors +
+                '}';
     }
 }
